@@ -9,6 +9,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "agent": "tsx src/agent/livekit-agent.ts dev",
+    "agent:prod": "node dist/agent/livekit-agent.js start",
     "agent:build": "node dist/agent/livekit-agent.js dev",
     "type-check": "tsc --noEmit"
   },
