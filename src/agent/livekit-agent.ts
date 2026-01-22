@@ -281,6 +281,7 @@ if (process.argv[1] === currentFile) {
   cli.runApp(
     new WorkerOptions({
       agent: currentFile,
+      agentName: 'superbryn-agent',
     })
   );
 }

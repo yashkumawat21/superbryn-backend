@@ -71,7 +71,7 @@ app.post('/api/token', async (req, res) => {
     // Dispatch an agent to the room (only once per room)
     if (!dispatchedRooms.has(roomName)) {
       try {
-        await agentDispatch.createDispatch(roomName, '');
+        await agentDispatch.createDispatch(roomName, 'superbryn-agent');
         dispatchedRooms.add(roomName);
         console.log(`Agent dispatched to room: ${roomName}`);
 
