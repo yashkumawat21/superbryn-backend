@@ -34,6 +34,9 @@ const agentDispatch = new AgentDispatchClient(
   LIVEKIT_API_SECRET
 );
 
+// Track dispatched rooms to prevent double dispatch
+const dispatchedRooms = new Set<string>();
+
 // Health check
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok' });
@@ -65,12 +68,20 @@ app.post('/api/token', async (req, res) => {
       }
     }
 
-    // Dispatch an agent to the room
-    try {
-      await agentDispatch.createDispatch(roomName, '');
-      console.log(`Agent dispatched to room: ${roomName}`);
-    } catch (err: any) {
-      console.error('Agent dispatch error:', err.message);
+    // Dispatch an agent to the room (only once per room)
+    if (!dispatchedRooms.has(roomName)) {
+      try {
+        await agentDispatch.createDispatch(roomName, '');
+        dispatchedRooms.add(roomName);
+        console.log(`Agent dispatched to room: ${roomName}`);
+
+        // Clean up after 10 minutes
+        setTimeout(() => dispatchedRooms.delete(roomName), 10 * 60 * 1000);
+      } catch (err: any) {
+        console.error('Agent dispatch error:', err.message);
+      }
+    } else {
+      console.log(`Agent already dispatched to room: ${roomName}`);
     }
 
     // Create access token
