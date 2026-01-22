@@ -67,9 +67,7 @@ app.post('/api/token', async (req, res) => {
 
     // Dispatch an agent to the room
     try {
-      await agentDispatch.createDispatch(roomName, {
-        agentName: '', // Empty string means any available agent
-      });
+      await agentDispatch.createDispatch(roomName, '');
       console.log(`Agent dispatched to room: ${roomName}`);
     } catch (err: any) {
       console.error('Agent dispatch error:', err.message);
